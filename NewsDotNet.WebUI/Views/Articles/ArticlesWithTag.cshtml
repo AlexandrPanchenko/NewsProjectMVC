@@ -1,0 +1,48 @@
+﻿@model NewsDotNet.WebUI.Models.ArticleListViewModel
+
+@{
+    var articles = Model.Articles;
+    var baseUrl = Url.Action("ArticlesWithTag", new { tagAddressName = ViewBag.TagAddressName });
+    var tagName = ViewBag.TagName;
+    var mostOftenTagAddressName = ViewBag.MostOftenTagAddressName;
+    var mostOftenTagName = ViewBag.MostOftenTagName;
+}
+
+<div class="wrap">
+    <div id="main" role="main">
+        <div class="container">
+            @if (Model.PagingInfo.TotalItems == 0)
+            { <div class="alert alert-info">Нет статей с выбранным тегом</div>}
+            else
+            {
+                <h1>Найдено @Model.PagingInfo.TotalItems статей с тегом @tagName </h1>
+                if (mostOftenTagName != null) { <h2>С этим тегом чаще всего встречается тег <a href="@Url.Action("ArticlesWithTag", "Articles", new { tagAddressName = mostOftenTagAddressName})">@mostOftenTagName</a></h2>}
+                <ul class="pagination">
+                    @for(int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+                    {
+                        <li @if(i == Model.PagingInfo.CurrentPage){<text> class="active"</text>}>
+                            <a href="@Url.Action("ArticlesWithTag", new { tagAddressName = ViewBag.TagAddressName, page = i })">@i</a>
+                        </li>
+                    }
+                </ul>
+                <ul class="list-group">
+                    @foreach (var article in articles)
+                    {
+                        @Html.Partial("ArchiveArticlePartial", article)
+                    }
+                </ul>
+
+                <ul class="pagination">
+                    @for (int k = 1; k <= Model.PagingInfo.TotalPages; k++)
+                    {
+                        <li @if (k == Model.PagingInfo.CurrentPage) { <text> class="active" </text>  }>
+                            <a href="@Url.Action("ArticlesWithTag", new { tagAddressName = ViewBag.TagAddressName, page = k })">@k</a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+
+    </div>
+</div>
+

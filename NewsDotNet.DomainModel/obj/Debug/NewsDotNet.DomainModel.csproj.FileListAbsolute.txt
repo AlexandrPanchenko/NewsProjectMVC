@@ -1,0 +1,17 @@
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\NewsDotNet.DomainModel.dll.config
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\NewsDotNet.DomainModel.dll
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\NewsDotNet.DomainModel.pdb
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\EntityFramework.dll
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\Newtonsoft.Json.dll
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\EntityFramework.xml
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\Newtonsoft.Json.xml
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\bin\Debug\ru\Microsoft.AspNet.Identity.Core.resources.dll
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\obj\Debug\NewsDotNet.DomainModel.csprojResolveAssemblyReference.cache
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\obj\Debug\NewsDotNet.DomainModel.dll
+C:\Users\admin\Desktop\newsdotnetart-newsdotnet-d06ff2bf2b07\NewsDotNet.DomainModel\obj\Debug\NewsDotNet.DomainModel.pdb

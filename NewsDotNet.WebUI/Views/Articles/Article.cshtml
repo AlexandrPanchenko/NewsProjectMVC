@@ -1,0 +1,36 @@
+﻿@model NewsDotNet.DomainModel.Entities.Article
+
+@{
+    ViewBag.Title = Model.Title + " - News.Net";
+}
+
+<div class="wrap">
+    <div class="single-page">
+        <div class="single-page-artical">
+            <div class="artical-content">
+                <div class="published">@NewsDotNetHelpers.DateInRussianLocale(Model.LastChangedTime)</div>
+                <h3>@Model.Title</h3>
+                @if (!String.IsNullOrEmpty(Model.TitleImagePath))
+                {
+                    <img src=@Url.Content(Model.TitleImagePath)>
+                }
+                <p>@Html.Raw(Model.Body)</p>
+            </div>
+            <div class="artical-links">
+                <ul>
+                    <li>@NewsDotNetHelpers.AuthorLink(Model.AuthorId, includeIcon: true)</li>
+                    <li><img src="~/Content/Images/Layout/blog-icon4.png" title="Теги">
+                        @foreach (var tag in Model.Tags)
+                        {
+                            <span><a  href="@Url.Action("ArticlesWithTag", "Articles", new { tagAddressName = tag.AddressName })">@tag.Name</a></span>
+                        }
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"> </div>
+        </div>
+        <br>
+        @* INCLUDE DISQUS *@
+        @Html.Partial("_Disqus")
+    </div>
+</div>

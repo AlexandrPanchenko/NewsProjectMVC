@@ -1,0 +1,103 @@
+﻿@using NewsDotNet.WebUI.Areas.Admin.Controllers
+@model NewsDotNet.WebUI.Areas.Admin.Models.ArticleViewModel
+
+@{
+    ActionType action = ViewBag.Action;
+    ViewBag.Title = action == ActionType.NewArticle ? "Новая статья" : "Редактирование статьи";
+}
+
+@using (Html.BeginForm(action == ActionType.NewArticle ? "New" : "Edit",
+                        "AdminArticles",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal container">
+        
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.CreatedTime)
+        @Html.HiddenFor(model => model.TitleImagePath)
+        @Html.HiddenFor(model => model.State)
+        @Html.HiddenFor(model => model.AuthorId)
+        
+        @{bool isImagePresent = !String.IsNullOrEmpty(Model.TitleImagePath);}
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Заголовок</label>
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Адрес</label>
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.AddressName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AddressName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Изображение</label>
+            <div class="col-md-9">
+                <div class="row" id="previewRow" @if (!isImagePresent) { <text> hidden="true" </text> }>
+                    <div class="col-xs-3">
+                        <img id="uploadPreview" width="100%" 
+                             @if (isImagePresent) { <text> src="@Url.Content(Model.TitleImagePath)" </text>  } />
+                    </div>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <span class="btn btn-primary btn-file">
+                            Выберите файл...
+                            <input type="file" name="titleImage" id="titleImage" accept=".jpg,.png,.jpeg,.gif" onchange="PreviewImage();" />
+                        </span>
+                    </span>
+                    <input type="text" id="titleText" class="form-control" readonly>
+                </div>
+                @Html.ValidationMessageFor(model => model.TitleImagePath, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Тело статьи</label>
+            <div class="col-md-9">
+                @Html.TextAreaFor(model => model.Body, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Теги</label>
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.TagsString, new { htmlAttributes = new { @class = "form-control"} })
+                @Html.ValidationMessageFor(model => model.TagsString, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-9">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Вернуться к списку", "Index", "AdminHome")
+</div>
+
+<script src="~/Content/ckeditor/ckeditor.js"></script>
+<script src="~/Content/jquery-tags-input/jquery.tagsinput.min.js"></script>
+<script src="~/Scripts/bootstrap-maxlength.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/article-editor.js"></script>
+<link rel="stylesheet" type="text/css" href="~/Content/Styles/jquery-ui-1.11.4.min.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/jquery-ui-1.9.2.custom/css/black-tie/jquery-ui-1.9.2.custom.css" />
+<link rel="stylesheet" type="text/css" href="~/Content/jquery-tags-input/jquery.tagsinput.min.css" />
+<link rel="stylesheet" href="~/Content/Styles/article-editor.css" />

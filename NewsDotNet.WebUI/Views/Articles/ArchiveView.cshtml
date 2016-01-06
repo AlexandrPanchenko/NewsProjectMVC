@@ -1,0 +1,32 @@
+﻿@model IEnumerable<NewsDotNet.WebUI.Models.ArchiveArticles>
+
+@{
+    ViewBag.Title = "Архив";
+}
+
+<div class="wrap">
+        <div id="main" role="main">
+                <div class="container">
+                        <ul class="list-group">
+                
+                                @foreach(var ArchiveArticles in Model)
+                {
+                    if (@ArchiveArticles.Date==DateTime.Now.ToShortDateString())
+                    { <h1 >Сегодня</h1>}
+                    else if(Convert.ToDateTime(@ArchiveArticles.Date) + @ArchiveArticles.tspan==DateTime.Today)
+                    { <h1 >Вчера</h1>}
+                      else
+                    {
+                       <h1 >@Convert.ToDateTime(ArchiveArticles.Date).ToString("D", new System.Globalization.CultureInfo("ru-RU"))</h1>}
+                foreach (var Articles in ArchiveArticles.Articles)
+                   {
+
+                    @Html.Partial("ArchiveArticlePartial", Articles)
+                   }
+                }
+
+            </ul>
+        </div>
+    </div>
+
+</div>

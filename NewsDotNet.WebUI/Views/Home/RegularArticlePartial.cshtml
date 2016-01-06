@@ -1,0 +1,23 @@
+﻿@model NewsDotNet.DomainModel.Entities.MainPageEntity
+
+<li onclick="location.href='@Url.Action("Show", "Articles", new { addressName = Model.Article.AddressName })';" data-col="@Model.GridData.Col" data-row="@Model.GridData.Row" data-sizex="@Model.GridData.SizeX" data-sizey="@Model.GridData.SizeY">
+    @if (!String.IsNullOrEmpty(Model.Article.TitleImagePath))
+    {
+        <img src=@Url.Content(Model.Article.TitleImagePath)>
+    }
+    <div class="post-info">
+        <div class="post-basic-info">
+            <h3>@Model.Article.Title</h3>
+            @foreach (var tag in Model.Article.Tags)
+            {
+                <span class="tag"><a href="@Url.Action("ArticlesWithTag", "Articles", new { tagAddressName = tag.AddressName })"><label> </label>@tag.Name</a></span>
+            }
+            <p class="comments">
+                <span class="glyphicon glyphicon-comment"></span>&nbsp;
+                <a data-disqus-identifier="@Model.Article.AddressName"
+                   href="@Url.Action("Show", "Articles", new { addressName = Model.Article.AddressName })#disqus_thread">0</a>
+            </p>
+        </div>
+    </div>
+</li>
+

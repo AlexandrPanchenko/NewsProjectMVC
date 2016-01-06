@@ -1,0 +1,48 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Некорректный ввод</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/Images/Layout/fav-icon.png" />
+</head>
+<body>
+    <div class="container">
+        <div class="row vertical-center-row">
+            <div class="col-lg-12">
+                <div class="row ">
+                    <div class="col-xs-6 col-xs-offset-3">
+                        <h1>Ввод HTML-тегов запрещен</h1>
+                        <h4>Пожалуйста, удостоверьтесь, что введенные Вами данные не содержат угловых скобок, таких как &lt; или &gt;, не отделенных от других символов пробелами</h4>
+                        <p><a href="javascript:history.go(-1)" class="btn btn-primary">Вернуться назад</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <link href="~/Content/Styles/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        html, body, .container {
+            height: 100%;
+            background-color: #80fcb4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            display: table;
+            vertical-align: middle;
+        }
+
+        .vertical-center-row {
+            display: table-cell;
+            vertical-align: middle;
+        }
+    </style>
+
+</body>
+</html>

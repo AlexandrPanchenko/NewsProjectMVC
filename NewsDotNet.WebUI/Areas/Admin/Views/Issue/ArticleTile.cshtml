@@ -1,0 +1,21 @@
+﻿@model NewsDotNet.DomainModel.Entities.MainPageEntity
+
+<li data-id="@Model.ArticleID" data-col="@Model.GridData.Col" data-row="@Model.GridData.Row" data-sizex="@Model.GridData.SizeX" data-sizey="@Model.GridData.SizeY">
+    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+    @if (!String.IsNullOrEmpty(Model.Article.TitleImagePath))
+    {
+        <img src=@Url.Content(Model.Article.TitleImagePath)>
+    }
+    <div class="post-info">
+        <div class="post-basic-info">
+            <h3>@Model.Article.Title</h3>
+            @foreach (var tag in Model.Article.Tags)
+            {
+                <span><a href="#"><label> </label>@tag.Name</a></span>
+            }
+        </div>
+    </div>
+</li>
+
+
+

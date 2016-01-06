@@ -1,0 +1,396 @@
+﻿
+@{
+    ViewBag.Title = "Список пользователей";
+    bool isEditedPasswordOwn = false;
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Пользователи
+    </div>
+    <table class="table table-striped" id="users">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Логин</th>
+                <th>Роль</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>E-Mail</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table> 
+</div>
+
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#user-form">Создать</button>
+
+@Html.Partial("_ChangePasswordPartial", isEditedPasswordOwn)
+
+@*Modal user form*@
+<div class="modal fade" id="user-form" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="modalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Введите данные пользователя</h4>
+            </div>
+            <div class="modal-body">
+              <form id="userForm" action="@Url.Action("Create", "Users")" method="post">
+                  <div class="form-group">
+                      <label for="UserName">Логин</label>
+                      <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Логин" required />
+                  </div>
+                  <div class="form-group">
+                      <label for="Password">Пароль</label>
+                      <input type="password" class="form-control" id="Password" name="password" placeholder="Пароль" required/>
+                  </div>
+                  <div class="form-group">
+                      <label for="PasswordConfirm">Подтвердите пароль</label>
+                      <input type="password" class="form-control" id="PasswordConfirm" name="PasswordConfirm" placeholder="Пароль" required/>
+                  </div>
+                  <div class="form-group">
+                      <label for="Role">Роль</label>
+                      <select class="form-control" id="Role" name="Role">
+
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label for="FirstName">Имя</label>
+                      <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="Имя" required />
+                  </div>
+                  <div class="form-group">
+                      <label for="LastName">Фамилия</label>
+                      <input type="text" class="form-control" id="LastName" name="LastName" placeholder="Фамилия" required />
+                  </div>
+                  <div class="form-group">
+                      <label for="Email">E-mail</label>
+                      <input type="email" class="form-control" id="Email" name="Email" placeholder="E-mail" required />
+                  </div>
+                  <div class="modal-footer">
+                      <button class="btn btn-default" type="reset" data-dismiss="modal">Отмена</button>
+                      <button class="btn btn-primary" type="submit" id="saveBtn">Сохранить</button>
+                  </div>
+              </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+@*Scripts goes here*@
+<script src="~/Scripts/jquery.form.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript">
+    @*Initial request for all users*@
+
+    $.ajax({
+        type: "POST",
+        url: "@Url.Action("List", "Users")",
+        contentType: "application/json",
+        dataType: "json",
+        success: function (data) {
+            $userTable = $('#users');
+            if (data.length > 0) {
+                for (var k in data) {
+                    AddUser(data[k]);
+                }
+            } else {
+                var $placeholder = $('<tr id="placeholder"><td colspan="5" class="text-center">Нет учетных записей пользователей</td></tr>');
+                $userTable.children('tbody').append($placeholder);
+            }
+        }
+    })
+
+    $(document).ready(function () {
+        var options = {
+            dataType: 'json',
+            beforeSubmit: function () {
+                var $saveBtn = $('#saveBtn');
+                $saveBtn.attr('disabled', 'disabled');
+                $saveBtn.text('Сохранение...');
+            },
+            success: function (data) {
+
+                //reset all existing error messages
+                $('#user-form .help-block').remove();
+                $('#user-form .alert').remove();
+                $('#user-form .form-control-feedback').remove();
+                $('#user-form .has-error').removeClass('has-error');
+                $('#user-form .has-feedback').removeClass('has-feedback');
+
+                var $saveBtn = $('#saveBtn');
+                $saveBtn.removeAttr('disabled');
+                $saveBtn.text('Сохранить');
+
+                if (data['Result'] == 'success') {
+                    AddUser(data['User']);
+                    $('#user-form').modal('hide');
+                } else {
+                    for (var key in data['Errors']) {
+                        var $errors = $('<span class = "help-block"></span>');
+                        $errors.append(data['Errors'][key].join());
+                        var $item = $('#' + key).parent('.form-group');
+                        if ($item.length > 0) {
+                            $item.addClass('has-error has-feedback');
+                            $item.append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+                            $item.after($errors);
+                        } else {
+                            var $alert = $('<div class="alert alert-danger" role="alert"></div>');
+                            $alert.append($errors);
+                            $('#user-form .modal-body').prepend($alert);                           
+                        }
+                        
+                    }
+                }
+            }
+        }
+        $('#userForm').ajaxForm(options);
+
+        $('#user-form').on('show.bs.modal', function (event) {
+            $('#user-form .help-block').remove();
+            $('#user-form .alert').remove();
+            $('#user-form .form-control-feedback').remove();
+            $('#user-form .has-error').removeClass('has-error');
+            $('#user-form .has-success').removeClass('has-success');
+            $('#user-form .has-feedback').removeClass('has-feedback');
+
+            $('#userForm').resetForm();
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetRoleList")',
+                contentType: "application/json",
+                success: function (data) {
+                    $('#Role').children('option').remove();
+
+                    for (var k in data) {
+                        $opt = $('<option></option>');
+                        $opt.attr('value', data[k]['value']);
+                        $opt.text(data[k]['text']);
+                        $('#Role').append($opt);
+                    }
+                }
+            })
+        });
+
+        $('#UserName').change(function () {
+            if (this.value.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("IsUserNameAvailable")',
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify({userName: this.value}),
+                    success: function (data) {
+                        var $loginInput = $('#UserName').parent('.form-group');
+                        $loginInput.removeClass('has-success has-error has-feedback');
+                        $loginInput.children('.form-control-feedback').remove();
+                        $loginInput.children('.help-block').remove();
+                        if (data) {
+                            $loginInput.addClass('has-success has-feedback');
+                            $loginInput.append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>');
+                        }
+                        else {
+                            $loginInput.addClass('has-error has-feedback')
+                            $loginInput.append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+                            $loginInput.append('<span class = "help-block">Этот логин уже используется</span>');
+                        }
+                    }
+                })
+            }
+        })
+
+        $('#Password').change(VerifyPassword);
+        $('#PasswordConfirm').change(VerifyPassword);
+    })
+
+    function VerifyPassword() {
+        var $password = $('#Password').parent('.form-group');
+        var $passwordConfirm = $('#PasswordConfirm').parent('.form-group');
+
+        var password = $('#Password').val();
+        var passwordConfirm = $('#PasswordConfirm').val();
+
+        if (password.length > 0 && passwordConfirm.length > 0) {
+            $password.removeClass('has-success has-error has-feedback');
+            $passwordConfirm.removeClass('has-success has-error has-feedback');
+
+            $password.children('.form-control-feedback').remove();
+            $password.children('.help-block').remove();
+            $passwordConfirm.children('.form-control-feedback').remove();
+
+
+            if (password == passwordConfirm) {
+                $password.addClass('has-success has-feedback');
+                $passwordConfirm.addClass('has-success has-feedback');
+                $password.append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>');
+                $passwordConfirm.append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>');
+            } else {
+                $password.addClass('has-error has-feedback');
+                $passwordConfirm.addClass('has-error has-feedback');
+                $password.append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+                $passwordConfirm.append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>');
+                $password.append('<span class = "help-block">Введенные пароли не совпадают</span>');
+            }
+        }
+        
+    }
+
+    function AddUser(user) {
+        var $userTableBody = $('#users tbody');
+
+        var $row = $('<tr></tr>');
+        
+
+        for (k in user) {
+            var $cell = $('<td></td>');
+            var val = user[k];
+            if (k == "Id" || k == "UserName") {
+                $cell.append(val);
+            } else if (k == "Role") {
+                var $link = $('<a href = "#"></a>');
+                $link.attr('data-pk', user['Id']);
+                $link.attr('data-name', k);
+                $link.attr('data-value', val);
+                $link.addClass('editable-role-select');
+                $cell.append($link);
+            } else if (k == "IsBlocked") {
+                if (val == true)
+                    $row.addClass("danger");
+            } else {
+                var $link = $('<a href = "#"></a>');
+                $link.attr('data-pk', user['Id']);
+                $link.attr('data-name', k);
+                $link.addClass('editable');
+                $link.text(val);
+                $cell.append($link);
+            }
+            
+            if (k != "IsBlocked")
+                $row.append($cell);
+        }
+
+        var $cell = $('<td class="dropdown-action"></td>');
+        var $btnGroup = $('<div class="btn-group"></div>');
+        $btnGroup.append($('<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Действие <span class="caret"></span></button>'));
+        $actionList = $('<ul class="dropdown-menu pull-right" role="menu"></ul>');
+        
+        $actChangePassword = $('<li></li>');
+        $actChangePasswordLink = $('<a>Изменить пароль</a>');
+        $actChangePasswordLink.attr("data-id", user["Id"]);
+        $actChangePasswordLink.click(function (event) { ShowPasswordModal(event.target) });
+        $actChangePassword.append($actChangePasswordLink);
+
+        $actBlock = $('<li></li>');
+        $actBlockLink = $('<a>' + (user["IsBlocked"] ? 'Разблокировать' : 'Заблокировать') + '</a>');
+        $actBlockLink.attr("data-id", user["Id"]);
+        $actBlockLink.click(function (event) { ChangeBlockedState(event.target) });
+        $actBlock.append($actBlockLink);
+
+        $actEndAllSessions = $('<li></li>');
+        $actEndAllSessionsLink = $('<a>Завершить все сеансы</a>');
+        $actEndAllSessionsLink.attr("data-id", user["Id"]);
+        $actEndAllSessionsLink.click(function (event) { EndAllSessions(event.target) });
+        $actEndAllSessions.append($actEndAllSessionsLink);
+
+        $actionList.append($actChangePassword);
+        $actionList.append($actBlock);
+        $actionList.append($actEndAllSessions);
+        $btnGroup.append($actionList);
+        $cell.append($btnGroup);
+        $row.append($cell);
+
+        $userTableBody.append($row);
+
+        var $placeholder = $("#placeholder");
+        if ($placeholder)
+            $placeholder.remove();
+
+        $('.editable').editable({
+            url: '@Url.Action("InlineUpdate")',
+            success: function (response, newValue) {
+                if (response.status == 'error') return response.msg;
+            }
+        });
+        $('.editable-role-select').editable({
+            url: '@Url.Action("InlineRoleChange")',
+            success: function (response, newValue) {
+                if (response.status == 'error') return response.msg;
+            },
+            type: 'select',
+            source: '@Url.Action("GetRoleList")'
+        });
+    }
+
+    function ChangeBlockedState(target) {
+        if ($(target).text() == "Заблокировать")
+            var actionMethod = "BlockUser";
+        else
+            var actionMethod = "UnblockUser";
+        $.ajax({
+            type: "POST",
+            url: "/Admin/Users/" + actionMethod,
+            data: 'id=' + target.getAttribute("data-id"),
+            success: function (data) {
+                var $row = $(target).parents("tr");
+                if (data["result"] == "success") {
+                    if (data["msg"] == "blocked") {
+                        $row.addClass("danger");
+                        $(target).text("Разблокировать");
+                    } else {
+                        $row.removeClass("danger");
+                        $(target).text("Заблокировать");
+                    }
+                } else {
+                    $row.popover({
+                        content: data["msg"],
+                        title: "Ошибка блокировки пользователя",
+                        placement: 'auto bottom'
+                    });
+                    $row.popover('show');
+                    setTimeout(function () { $row.popover('destroy') }, 3000);
+                }
+            }
+        })
+    }
+
+    function ShowPasswordModal(target) {
+        $('#passwordForm input[type=hidden]')[0].value = $(target).attr("data-id");
+        $('#passwordModal').modal('show');
+    }
+
+    function EndAllSessions(target) {
+        $.ajax({
+            type: "POST",
+            url: "/Admin/Users/EndAllSessions",
+            data: 'id=' + target.getAttribute("data-id"),
+            success: function (data) {
+                var $row = $(target).parents("tr");
+                if (data["result"] == "success") {
+                    var msgTitle = "";
+                    var msgContent = "Все сеансы пользователя успешно завершены";
+                } else {
+                    var msgTitle = "Не удалось завершить сеансы пользователя";
+                    var msgContent = data["msg"];
+                }
+                $row.popover({
+                    content: msgContent,
+                    title: msgTitle,
+                    placement: 'auto bottom'
+                });
+                $row.popover('show');
+                setTimeout(function () { $row.popover('destroy') }, 3000);
+            }
+        })
+    }
+</script>
+<script src="~/Scripts/bootstrap-editable.js"></script>
+<script src="~/Scripts/password-editor.js"></script>
+<link href="~/Content/Styles/bootstrap-editable.css" rel="stylesheet" />

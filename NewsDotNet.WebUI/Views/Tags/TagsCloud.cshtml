@@ -1,0 +1,13 @@
+﻿@model IEnumerable<NewsDotNet.DomainModel.Entities.Tag>
+<!-- display tags in sidebar menu -->
+<div class="artical-links">
+    <ul>
+        <li>
+            <img src="~/Content/Images/Layout/blog-icon4.png" title="Теги">
+            @foreach (var tag in Model)
+            {
+                <span><a href="@Url.Action("ArticlesWithTag", "Articles", new { tagAddressName = tag.AddressName })">@tag.Name</a></span>
+            }
+        </li>
+    </ul>
+</div>

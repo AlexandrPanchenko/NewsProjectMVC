@@ -1,0 +1,210 @@
+/*
+-----------------------------------------------
+Blogger Template Style
+Name:        Time Line
+Created by:  ThemeXpose
+Url:         http://www.Themexpose.com/
+----------------------------------------------- */
+/*NAV MENU LIST*/
+.nav-list-holder {
+padding: 80px;
+}
+.slogan-holder {
+display: none;
+}
+.main-nav-menu {
+list-style: none;
+padding: 0;
+text-align: right;
+margin-left: auto;
+margin-right: auto;
+}
+.main-nav-menu li {
+padding: 0;
+margin-bottom: 15px;
+}
+.main-nav-menu > li > a {
+font-weight: 200;
+font-size: 14px;
+line-height: 21px;
+letter-spacing: 4px;
+text-decoration: none;
+text-transform: uppercase;
+-webkit-transition: all .8s linear;
+-moz-transition: all .8s linear;
+-ms-transition: all .8s linear;
+-o-transition: all .8s linear;
+transition: all .8s linear;
+}
+.main-nav-menu > li > a:hover {
+-webkit-transition: all .8s linear;
+-moz-transition: all .8s linear;
+-ms-transition: all .8s linear;
+-o-transition: all .8s linear;
+transition: all .8s linear;
+}
+.main-nav-menu > li > a:focus {
+font-weight: 600;
+border-bottom: solid 1px #fff;
+-webkit-transition: all .8s linear;
+-moz-transition: all .8s linear;
+-ms-transition: all .8s linear;
+-o-transition: all .8s linear;
+transition: all .8s linear;
+}
+.main-nav-menu > li > ul {
+display: none;
+padding: 0px;
+margin-top: 5px;
+margin-bottom: 15px;
+}
+.main-nav-menu > li > ul a {
+color: #777;
+display: block;
+font-weight: 200;
+font-size: 12px;
+line-height: 24px;
+letter-spacing: 0px;
+text-decoration: none;
+-webkit-transition: all 0.5s ease-in-out;
+-moz-transition: all 0.5s ease-in-out;
+-ms-transition: all 0.5s ease-in-out;
+-o-transition: all 0.5s ease-in-out;
+transition: all 0.5s ease-in-out;
+}
+.main-nav-menu > li > ul a:hover {
+-webkit-transition: all 0.5s ease-in-out;
+-moz-transition: all 0.5s ease-in-out;
+-ms-transition: all 0.5s ease-in-out;
+-o-transition: all 0.5s ease-in-out;
+transition: all 0.5s ease-in-out;
+}
+.main-nav-menu > li > ul li {
+list-style: none;
+margin-bottom: 0;
+}
+.valign {
+position: relative;
+top: 50%;
+-webkit-transform: translateY(-50%);
+-ms-transform: translateY(-50%);
+transform: translateY(-50%);
+}
+.open-nav .mobile-toggle {
+transform: rotate(-90deg);
+-webkit-transform: rotate(-90deg);
+-webkit-transition: all .4s ease-in-out;
+-moz-transition: all .4s ease-in-out;
+-ms-transition: all .4s ease-in-out;
+-o-transition: all .4s ease-in-out;
+transition: all .4s ease-in-out;
+}
+.mobile-toggle {
+cursor: pointer;
+font-size: 20px;
+position: fixed;
+right: 20px;
+top:32px;
+width: 40px;
+z-index: 100000;
+-webkit-transition: all .4s ease-in-out;
+-moz-transition: all .4s ease-in-out;
+-ms-transition: all .4s ease-in-out;
+-o-transition: all .4s ease-in-out;
+transition: all .4s ease-in-out;
+}
+.mobile-toggle span {
+width: 40px;
+height: 4px;
+margin-bottom: 6px;
+background-color: rgba(0, 0, 0, 0.54);
+border-radius: 20px;
+display: block;
+-webkit-transition: all .8s ease-in-out;
+-moz-transition: all .8s ease-in-out;
+-ms-transition: all .8s ease-in-out;
+-o-transition: all .8s ease-in-out;
+transition: all .8s ease-in-out;
+}
+.text-center {
+text-align: center;
+}
+.menu-panel {
+width: 66%;
+position: fixed;
+top: 0;
+right: 3000px;
+z-index: 99999;
+background-position: center center;
+background-repeat: no-repeat;
+}
+nav.nav-item-wrap ul li {
+list-style-type: none;
+}
+.copy-credits {
+text-align: right;
+margin-top: 60px;
+border-top: solid 1px;
+padding-top: 10px;
+}
+.col-md-6 {
+width: 50%;
+float: left;
+}
+.white-bg{
+background:#FFFFFF;
+}
+.menu-panel {
+width: 66%;
+position: fixed;
+top: 0;
+right: 110%;
+z-index: 99999;
+background-position: center center;
+background-repeat: no-repeat;
+}
+.menu-panel {
+    background-image: url('../Images/Layout/cover.jpg');
+	background-size: cover;
+}
+/*****************************************
+Responsive styles
+******************************************/
+@media screen and (max-width: 1024px) {
+}
+@media screen and (max-width: 960px) {
+.nav-menu ul { text-align: center; }
+.nav-menu ul li { float: none; }
+}
+@media screen and (max-width: 768px){
+.col-lg-6 {
+width: 100%;
+float: left;
+}
+.nav-list-holder {
+padding: 80px;
+}
+.menu-panel {
+width: 100%;}
+}
+@media screen and (max-width: 500px) {
+.nav-logo-wrap img {
+    max-width: 125px;
+}
+
+.nav-list-holder {
+    padding: 40px;
+}
+}
+@media screen and (max-width: 420px){
+.menu-panel {
+width: 100%;}
+.nav-logo-wrap img {
+max-width: 90px;}
+.mobile-toggle {
+top:25px;}
+}
+@media screen and (max-width: 320px){
+.menu-panel {
+width: 100%;}
+}

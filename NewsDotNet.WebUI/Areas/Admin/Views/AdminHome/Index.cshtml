@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "News.Net Admin: Управление статьями и тегами";
+}
+
+<h2>Управление статьями и тегами</h2>
+
+<!--CSS files-->
+<!-- jquery ui library -->
+<link href="~/Content/jquery-ui-1.9.2.custom/css/black-tie/jquery-ui-1.9.2.custom.css" rel="stylesheet" />
+<!-- jqgrid -->
+<link href="~/Content/tonytomov-jqGrid-6659334/css/ui.jqgrid.css" rel="stylesheet" />
+<link href="~/Content/Styles/Manage.css" rel="stylesheet" />
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tab-articles">Статьи</a></li>
+        <li><a href="#tab-tags">Теги</a></li>
+    </ul>
+    <div id="tab-articles" class="tab">
+        <table id="tableArticles" class="grid"></table>
+        <div id="pagerArticles" class="pager">
+        </div>
+    </div>
+    <div id="tab-tags" class="tab">
+        <table id="tableTags" class="grid"></table>
+        <div id="pagerTags" class="pager">
+        </div>
+    </div>
+</div>
+
+<div id="dialog" title="Внимание">
+    <p>Пожалуйста, выберите статью для редактирования</p>
+</div>
+<!-- jquery ui library -->
+<script src="~/Content/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.js"></script>
+<!-- jqgrid -->
+<script src="~/Content/tonytomov-jqGrid-6659334/js/i18n/grid.locale-ru.js"></script>
+<script src="~/Content/tonytomov-jqGrid-6659334/js/jquery.jqGrid.js"></script>
+<script type="text/javascript">
+    function ApplyPermissions() {
+        var hideCreateBtn;
+        @if(User.IsInRole("Corrector"))
+        {
+            @:hideCreateBtn = true;
+        }
+        else
+        {
+            @:hideCreateBtn = false;
+        }
+        if(hideCreateBtn){
+            $('td#addBtn').hide();
+        }
+    }
+</script>
+<script src="~/Scripts/Manage.js"></script>

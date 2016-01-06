@@ -1,0 +1,247 @@
+﻿@model IEnumerable<NewsDotNet.DomainModel.Entities.MainPageEntity>
+
+@{
+    ViewBag.Title = "News.NET - формирование главной страницы";
+}
+
+
+<link href="~/Content/Styles/main.css" rel="stylesheet" />
+<link href="~/Content/Styles/jquery.gridster.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.gridster.js"></script>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#article-select">Добавить статьи</button>
+            <button class="btn btn-warning" onclick="clearGrid();">Очистить</button>
+            <button class="btn btn-primary pull-right" onclick="save();" id="saveBtn">Сохранить</button>
+        </h3>
+        <div class="btn-group pull-right">
+
+        </div>
+    </div>
+    <div class="panel-body">
+        <ul id="tiles" class="gridster">
+            @foreach(var entity in Model)
+            {
+                @Html.Partial("ArticleTile", entity);
+            }
+        </ul>
+    </div>
+</div>
+
+@*Modal window*@
+<div class="modal fade" id="article-select" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="modalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel">Выберете статьи</h4>
+            </div>
+            <div class="modal-body">
+                <nav>
+                    <ul class="pagination">
+
+                    </ul>
+                </nav>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all" onclick="checkAll();" /></th>
+                            <th>Название</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <nav>
+                    <ul class="pagination">
+
+                    </ul>
+                </nav>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">Отмена</button>
+                <button class="btn btn-primary" type="button" data-dismiss="modal" onclick="addArticles();">Добавить</button>  
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Scripts goes here*@
+<script type="text/javascript">
+    $(function () {
+        var containerWidth = $('.container').width();
+
+        var baseWidth = (containerWidth - 70) / 7;
+
+        $("#tiles").gridster({
+            widget_margins: [10, 10],
+            widget_base_dimensions: [baseWidth, baseWidth],
+            avoid_overlapped_widgets:true,
+            resize: {
+                enabled: true
+            },
+            serialize_params: function ($w, wgd) {
+                return {
+                    ArticleID: $($w).attr('data-id'),
+                    IsFeatured: false,
+                    GridData: {
+                        Col: wgd.col,
+                        Row: wgd.row,
+                        SizeX: wgd.size_x,
+                        SizeY: wgd.size_y
+                    }
+                }
+            }
+        });
+
+
+        $('#alert-box').hide();
+
+        SetupCloseButtons();
+    });
+
+    $('#article-select').on('show.bs.modal', function (event) {
+        loadArticleList(1);
+    });
+
+    function checkAll() {
+       
+        $('.modal tbody input:checkbox').prop('checked',$('input#select-all').prop('checked'));
+    }
+
+    function SetupCloseButtons() {
+        $('#tiles li .close').on('click', function () {
+            var tile = $(this).parent();
+            var gridster = $('#tiles').gridster().data('gridster');
+            gridster.remove_widget(tile);
+        })
+    }
+
+    function save () {
+        var grid = JSON.stringify($('#tiles').gridster().data('gridster').serialize());
+
+        var $saveBtn = $('#saveBtn');
+        $saveBtn.text('Сохранение...');
+        $saveBtn.attr('disabled', 'true');
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Save")",
+            data: grid,
+            contentType: "application/json",
+            dataType: "json",
+            success: function () {
+                var alertBox = $('#alert-box');
+                alertBox.addClass('alert alert-success');
+                alertBox.text('Изменения успешно сохранены!');
+                $saveBtn.text('Сохранить');
+                $saveBtn.removeAttr('disabled');
+                alertBox.fadeIn();
+                setTimeout(function () { alertBox.removeClass('alert alert-success').fadeOut() }, 5000);
+            }
+        })
+    }
+
+    function addArticles()
+    {
+        var ids = [];
+        $('.modal-body tbody input:checkbox:checked').each(function () {
+            var id = $(this).attr('data-id');
+            ids.push(id);
+        })
+        var gridster = $('#tiles').gridster().data('gridster');
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("List", "AdminArticles")",
+            data: JSON.stringify(ids),
+            contentType: "application/json",
+            dataType: "json",
+            success: function (articles) {
+                for (var i = 0; i < articles.length;i++)
+                {
+                    var tags = articles[i]['Tags'];
+                    var tagsHtml = '';
+                    for (var k = 0; k < tags.length; k++)
+                    {
+                        tagsHtml += '<span><a href="#"><label> </label>' + tags[k]['Name'] + '</a></span>';
+                    }
+
+                    var html = '<li data-id="' + articles[i]['Id'] + '">'
+                        + '<button type="button" class="close"><span aria-hidden="true">&times;</span></button>'    
+                        + '<img src="'
+                        + articles[i]['TitleImagePath'].substring(1)
+                        + '">'
+                        + '<div class="post-info">'
+                        + '<div class="post-basic-info">'
+                        + '<h3>'
+                        + articles[i]['Title']
+                        + '</h3>'
+                        + tagsHtml
+                        + '</div> </div> </li>';
+
+                    gridster.add_widget(html, 2, 2);
+                }
+                SetupCloseButtons();
+            }
+        })
+    }
+
+
+    function clearGrid() {
+        var gridster = $('#tiles').gridster().data('gridster');
+        gridster.remove_all_widgets();
+    }
+
+    function loadArticleList(pageNumber) {
+        var $body = $('.modal-dialog .modal-body table tbody');
+        $body.empty();
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("PagingList", "AdminArticles")",
+            data: JSON.stringify({page: pageNumber}),
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+                var articles = data['Articles'];
+                var pagingInfo = data['PagingInfo'];
+                                
+                for(var i = 0; i<articles.length; i++)
+                {
+                    var $raw = $('<tr>'
+                             +'<td>'
+                             + '<input type="checkbox" data-id="' + articles[i]['Id'] + '"/>'
+                             + '</td>'
+                             +'<td>'
+                             + articles[i]['Title']
+                             + '</td>'
+                             + '</tr>');
+                   
+                    $body.append($raw);
+                }
+
+                var $pagingLinks = $('.modal-dialog .pagination');
+                $pagingLinks.empty();
+                for(var k = 0; k<parseInt(pagingInfo['TotalPages']); k++ )
+                {
+                    var num = k + 1;
+                    var $link = $("<li></li>");
+                    if (num == parseInt(pagingInfo['CurrentPage'])) {
+                        $link.addClass("active");
+                    }
+                    $link.html('<a href="#">' + num + '</a>');
+                    $pagingLinks.append($link);
+                }
+
+                $pagingLinks.children('li').each(function (index) {
+                    $(this).click(function (e) {
+                        e.preventDefault();
+                        loadArticleList(index + 1);
+                    });
+                })
+            }
+        })
+    }
+</script>
+
+

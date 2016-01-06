@@ -1,0 +1,44 @@
+﻿@model NewsDotNet.WebUI.Areas.Admin.Models.LoginModel
+
+@{
+    Layout = null;
+    string notification = TempData["notification"] as string;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <link href="~/Content/Styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Styles/signin.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="container">
+        @if (null != notification)
+        {
+            <div class="alert alert-warning" role="alert">
+                <center>@notification</center>
+            </div>   
+        }
+        @using (Html.BeginForm("Login", "Users", new{returnUrl = ViewBag.returnUrl}, FormMethod.Post, new{@class = "form-signin"}))
+        {
+            @Html.AntiForgeryToken();
+            <h2 class="form-signin-heading">Вход</h2>
+            <label for="Login" class="sr-only">Login</label>
+            @Html.TextBoxFor(x => x.Login, new { @class = "form-control", required = "true", autofocus = "true", placeholder = "Логин"})
+             <label for="Password" class="sr-only">Пароль</label>
+            @Html.PasswordFor(x => x.Password, new { @class = "form-control", required = "true", placeholder = "Пароль"})
+            @Html.ValidationSummary();
+            <div class="checkbox">
+              <label>
+                  @Html.CheckBoxFor(m => m.RememberMe) Запомнить меня
+              </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+        } 
+    </div>
+</body>
+</html>

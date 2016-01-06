@@ -1,0 +1,78 @@
+﻿@model IEnumerable<NewsDotNet.DomainModel.Entities.MainPageEntity>
+
+
+@{
+    ViewBag.Title = "News.Net";
+}
+<script src="~/Scripts/modernizr-2.6.2.min.js"></script>
+<script src="~/Scripts/main.js"></script>
+<link href="~/Content/Styles/preloader.css" rel="stylesheet" />
+<div id="loader-wrapper">
+    <div id="loader"></div>
+
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+
+</div>
+
+<div class="gallery container">
+        @*<h1>Top Stories</h1>*@
+        <!-- requried-jsfiles-for owl -->
+        <link href="~/Content/Styles/owl.carousel.css" rel="stylesheet">
+        <script src="~/Scripts/owl.carousel.js"></script>
+        <script>
+				    $(document).ready(function() {
+					    $("#owl-demo").owlCarousel({
+						    items : @Math.Min(@Model.Count(),3),
+						    lazyLoad : true,
+						    autoPlay : true,
+						    pagination : false,
+						    navigation : true,
+						    navigationText :  true,
+					    });
+				    });
+        </script>
+        <!-- //requried-jsfiles-for owl -->
+        <!-- start content_slider -->
+        <div id="owl-demo" class="owl-carousel ">
+            @foreach (var articleInfo in Model.Where(info => info.IsFeatured))
+            {
+                @Html.Partial("FeaturedArticlePartial", articleInfo.Article)
+            }
+
+        <!--//sreen-gallery-cursual---->
+    </div>
+</div>
+
+
+<div class="wrap container">
+    <div id="main" role="main">
+        <ul id="tiles">
+            @foreach (var entity in Model.Where(e => !e.IsFeatured))
+            {
+                @Html.Partial("RegularArticlePartial", entity)
+            }
+        </ul>
+    </div>
+</div>
+
+<link href="~/Content/Styles/jquery.gridster.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.gridster.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var containerWidth = $('.container').width();
+
+        var baseWidth = (containerWidth - 70)/7;
+
+        $("#tiles").gridster({
+            widget_margins: [10, 10],
+            widget_base_dimensions: [baseWidth, baseWidth],
+            avoid_overlapped_widgets:true,
+        }).data('gridster').disable();
+
+    })
+    </script>
+<!----//wookmark-scripts---->
+
+@Html.Partial("_DisqusCommentCount");
+

@@ -1,0 +1,3 @@
+﻿@model NewsDotNet.DomainModel.Entities.User
+
+<h4>@(Model.FirstName + " " + Model.LastName)</h4><p><a href="@Url.Action("EditProfile", "Users")">Редактирование профиля</a></p><a class="btn btn-sm btn-primary" href="@Url.Action("Logout", "Users")">Выход</a>

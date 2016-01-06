@@ -1,0 +1,65 @@
+﻿@model string
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Страница не найдена</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/Images/Layout/fav-icon.png" />
+</head>
+<body>
+    <div class="container">
+        <div class="row vertical-center-row">
+            <div class="col-lg-12">
+                <div class="row ">
+                    <div class="col-xs-6 col-xs-offset-3">
+                        <div class="plate">
+                            <p class="plate-text">404</p>
+                        </div>
+                        <center>
+                            <h4>Запрашиваемая Вами страница не найдена</h4>
+                            <p><a href="@Model" class="btn btn-primary">Вернуться на главную</a></p>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <link href="~/Content/Styles/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        html, body, .container {
+            height: 100%;
+            background-color: #ff6767;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            display: table;
+            vertical-align: middle;
+        }
+
+        .vertical-center-row {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        div.plate {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        p.plate-text {
+            color: #d01717;
+            font-size: 72px;
+            text-align: center;
+        }
+    </style>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/Styles/style.css" rel='stylesheet' type='text/css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="~/Content/Images/Layout/fav-icon.png" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!----webfonts---->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!----//webfonts---->
+    <!-- Global CSS for the page and tiles -->
+    <link rel="stylesheet" href="~/Content/Styles/main.css">
+    <!-- //Global CSS for the page and tiles -->
+    <!--Start-click-menu-->
+    <script src="~/Scripts/jquery-1.10.2.js"></script> 
+    <!-- Bootstrap CSS file -->
+    <!--<script src="~/Scripts/bootstrap.min.js"></script>-->
+    <link href="~/Content/Styles/bootstrap.min.css" rel="stylesheet" />
+    <!-- CSS file for menu -->
+    <link href="~/Content/Styles/styleformenu.css" rel='stylesheet' type='text/css' />
+    <!--//End-click-menu-->
+</head>
+<body>
+    <!---start-wrap---->
+    <!---start-header---->
+    <div class="header">
+        <div class="wrap">
+            <div class="logo">
+                <a href="@Url.Action("Index", "Home")"><img src="@Url.Content("~/Content/Images/Layout/logo-header.png")" /></a>
+            </div>
+            @* INCLUDE SiteBarMenu *@
+            @Html.Partial("_SiteBarMenu")
+            <div class="top-searchbar">
+                <form action="@Url.Action("ArticlesForSearch","Articles")" method="post" id="searchForm">
+                    <input type="text" name="search" /><input type="submit" value="" />
+                </form>
+            </div>
+            <div class="clear"> </div>
+        </div>
+    </div>
+    <!---//End-header---->
+    <!---start-content---->
+    <div id="search-results-block">
+        <span class="glyphicon glyphicon-remove" id="searchCloseBtn" aria-hidden="true"></span>
+        <div id="search-results">
+
+        </div>
+    </div>
+    <div class="content">
+        @RenderBody()
+        <br>
+    </div>
+    <!----start-footer--->
+    <div class="footer">
+        <a href="@Url.Action("Index", "Home")"><span class="glyphicon glyphicon-home"></span></a>
+    </div>
+    <!----//End-footer--->
+    <!---//End-wrap---->
+    <!-- js file for menu -->
+    <script src='~/Scripts/jquery.formenu.js' type='text/javascript'></script>
+    <script src="~/Scripts/jquery.form.min.js"></script>
+    <script src="~/Scripts/ArticleSearch.js"></script>
+</body>
+</html>

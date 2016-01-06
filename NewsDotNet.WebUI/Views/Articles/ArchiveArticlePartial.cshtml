@@ -1,0 +1,23 @@
+﻿@using NewsDotNet.WebUI.Infrastracture
+@model NewsDotNet.DomainModel.Entities.Article
+
+<li class="list-group-item" onclick="location.href='@Url.Action("Show", "Articles", new { addressName = Model.AddressName })';">
+    
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>@Model.Title</h3>
+            @foreach (var tag in Model.Tags)
+            {
+                <span><a href="@Url.Action("ArticlesWithTag", "Articles", new { tagAddressName = tag.AddressName })"><label> </label>@tag.Name</a></span>
+            }
+            <p>@Html.Raw(ParserSingletone.ToHtml(Model.Body.Substring(0, Math.Min(Model.Body.Length, 250))) + "...")</p>
+            <tr>
+                <td>Автор:@NewsDotNetHelpers.AuthorLink(Model.AuthorId, includeIcon: false)</td>
+                <td>Дата написания:@NewsDotNetHelpers.DateInRussianLocale(Model.CreatedTime)</td>
+                <td>Дата последнего изменения:@NewsDotNetHelpers.DateInRussianLocale(Model.LastChangedTime)</td>
+            </tr>
+        </div>
+    </div>
+</li>
+
+﻿

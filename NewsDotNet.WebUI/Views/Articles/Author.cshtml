@@ -1,0 +1,49 @@
+﻿@model NewsDotNet.WebUI.Models.ArticleListViewModel
+
+@{
+    var authorName = ViewBag.AuthorName;
+    var authorFirstName = ViewBag.AuthorFirstName;
+    var authorLastName = ViewBag.AuthorLastName;
+}
+<div class="wrap">
+    <div id="main" role="main">
+        <div class="container">
+            @if (Model == null)
+            { <div class="alert alert-info">Автор не найден</div>}
+            else if (Model.PagingInfo.TotalItems == 0)
+            {<div class="alert alert-info">У автора @authorFirstName @authorLastName еще нет ни одной статьи</div>}
+            else
+            { <h1>Статьи автора @authorFirstName @authorLastName: </h1> }
+
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+                {
+                    <li @if (i == Model.PagingInfo.CurrentPage) { <text> class="active" </text> }>
+                        <a href="@Url.Action("ArticlesByAuthor", new { authorName = authorName, page = i })">@i</a>
+                    </li>
+                }
+            </ul>
+
+
+
+            <ul class="list-group">
+                @foreach (var article in Model.Articles)
+                {
+                    @Html.Partial("ArchiveArticlePartial", article)
+
+                }
+            </ul>
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.PagingInfo.TotalPages; i++)
+                {
+                    <li @if (i == Model.PagingInfo.CurrentPage) { <text> class="active" </text>  }>
+                        <a href="@Url.Action("ArticlesByAuthor", new { authorName = authorName, page = i })">@i</a>
+                    </li>
+                }
+            </ul>
+
+        </div>
+
+    </div>
+</div>
+

@@ -1,0 +1,71 @@
+﻿@model NewsDotNet.WebUI.Areas.Admin.Models.EditProfileViewModel
+
+@{
+    ViewBag.Title = "Редактирование профиля";
+    bool isEditedPasswordOwn = true;
+}
+
+@Html.Partial("_ChangePasswordPartial", isEditedPasswordOwn)
+
+<div class="modal fade" id="redirectModal" tabindex="-1" role="dialog" aria-labelledby="redirectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="alert alert-success" role="alert">
+                    <p>Пароль был успешно изменен. Для продолжения работы необходимо войти в учетную запись с новым паролем</p>
+                    <p>Нажмите <a href="@Url.Action("Login", "Users")">сюда</a>, если Ваш браузер не поддерживает автоматической переадресации</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("EditProfile", "Users", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal container">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        <div class="form-group">
+            <label class="control-label col-md-2">Имя</label>
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Фамилия</label>
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">E-mail</label>
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-9">
+                <input type="submit" value="Сохранить" class="btn btn-primary"/>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-9">
+                <input type="button" value="Изменить пароль" class="btn btn-warning" data-toggle="modal" data-target="#passwordModal"/>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/password-editor.js"></script>

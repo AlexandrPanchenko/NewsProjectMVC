@@ -1,0 +1,46 @@
+﻿body {
+    margin:0;
+    padding: 0;
+}
+
+input.input-validation-error {
+    border: 1px solid #f00;
+    background-color: #fee;
+}
+
+.panel{
+    cursor: pointer;
+}
+
+#tiles li .close{
+    float: right;
+    visibility:hidden;
+  
+}
+
+#tiles li:hover .close{
+    visibility:visible;
+    opacity: 1;
+}
+
+.modal ul.pagination{
+    margin:0;
+}
+
+
+.navbar-nav{
+    float:none;
+}
+
+td.dropdown-action {
+    text-align: right;
+    width: 1px;
+}
+
+.table>tbody>tr>td {
+    vertical-align: middle;
+}
+
+a#user:focus {
+    outline: 0;
+}

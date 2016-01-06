@@ -1,0 +1,40 @@
+﻿<!--navigation button-->
+<div class='main-nav white-bg'>
+    <div class='mobile-toggle'>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<!--menu box start-->
+<section class='menu-panel fullheight'>
+    <div class='row'>
+        <article class='col-md-6 fullheight'>
+            <div class='valign text-center slogan-holder'>
+                <div class='nav-logo-wrap'>
+                    <a href='#'>
+                        <img alt="NewsDotNet" src="~/Content/Images/Layout/logo.png" />
+                    </a>
+                    <div class='slogan-wrap'>
+                        <h3 class='white font3 slogan-text'>News.Net Co. Working hard</h3>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article class='col-md-6 fullheight nav-list-holder white-bg'>
+            <div class='valign'>
+                <nav class='nav-item-wrap'>
+                    <ul class='main-nav-menu main-nav-menu-effect' id='menu-menu-1'>
+                        <li><a href="@Url.Action("Index", "Home")"><span>Главная</span></a></li>
+                        <li><a href="@Url.Action("Archive", "Articles")"><span>Архив</span></a></li>
+                    </ul>
+                </nav>
+                <div class='copy-credits'>
+                </div>
+                @* INCLUDE TagsCloud *@
+                @Html.Action("TagsCloud", "Tags")
+            </div>
+        </article>
+    </div>
+</section>
+<!--menu box end-->

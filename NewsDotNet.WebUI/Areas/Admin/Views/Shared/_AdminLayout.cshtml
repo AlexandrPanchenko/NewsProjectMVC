@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <title>@ViewBag.Title</title>
+        <link href="~/Content/Styles/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/Content/Styles/AdminStyles.css" rel="stylesheet" />
+        <link rel="shortcut icon" type="image/x-icon" href="~/Content/Images/Layout/fav-icon.png" />
+        <script src="~/Scripts/jquery-1.10.2.min.js"></script> 
+        <script src="~/Scripts/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-inverse" role="navigation">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href=@Url.Action("Index", "AdminHome")>
+                            News.Net Admin
+                        </a>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#responsive-menu">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                        <div class="collapse navbar-collapse" id="responsive-menu">
+                            @if(User.Identity.IsAuthenticated)
+                            {
+                                <ul class="nav navbar-nav">
+                                    <li><a href="@Url.Action("Index", "AdminHome")">Статьи и Теги</a></li>
+                                    @if(User.IsInRole("Editor") || User.IsInRole("Administrator"))
+                                    {
+                                        <li><a href="@Url.Action("Index", "Issue")">Формирование выпуска</a></li>
+                                    }
+                                    @if (User.IsInRole("Administrator"))
+                                    {
+                                        <li><a href="@Url.Action("Index","Users")">Пользователи</a></li>
+                                    }                                                                                                      
+
+                                    <li class="pull-right">
+                                        <a id="user" role="button" data-toggle="popover">
+                                            @User.Identity.Name <span class="glyphicon glyphicon-user"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            }                      
+                        </div>
+                </nav>
+        </div>
+
+        <div id="alert-box" role="alert">
+
+        </div>
+
+        <div class="container">
+            @RenderBody()
+        </div>
+        <br>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#user').popover({
+                    placement: 'bottom',
+                    html: true,
+                    content: '@Html.Action("UserPopup", "Users")',
+                    title: "Вы вошли как:",
+                    container: 'body'
+                })
+                $('body').bind('mousedown', function (e) {
+                    if ($('#user').attr('aria-describedby')) {
+                        if ($(e.target).parents('div.popover').length <= 0 &&
+                            e.target.id != 'user' &&
+                            e.target.parentElement.id != 'user') {
+                                $('#user').popover('hide');
+                        }
+                    }
+                })
+            })
+        </script>
+    </body>
+</html>

@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNet.Identity.Owin
+@using NewsDotNet.WebUI.Infrastracture
+@using Microsoft.AspNet.Identity
+@using NewsDotNet.WebUI.Models
+
+@helper DateInRussianLocale(DateTime date)
+{
+    @date.ToString("f", new System.Globalization.CultureInfo("ru-RU"));
+}
+
+@helper AuthorLink(string id, bool includeIcon)
+{
+    var userManager = Context.GetOwinContext().GetUserManager<IdentityUserManager>();
+    var author = userManager.FindById(id);
+    if (null != author)
+    {
+        <a href="/Authors/@author.UserName">
+        @if (includeIcon)
+        { <img src="~/Content/Images/Layout/blog-icon2.png" title="Автор"> }
+        <span>@author.FirstName @author.LastName</span></a>
+    }
+}
+
